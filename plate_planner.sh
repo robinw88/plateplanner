@@ -94,22 +94,105 @@ do
 echo $r
 rows+=("e$r")
 done
+
 echo ${rows[@]}
+echo ${allrows[@]}
 
 for f in ${rows[@]}
 do
 eval echo \${$f[@]}
 done
 
+circle_size=20
+D=20
+circle_radius=10
+R=10
 
-#font_size=12
-#font_style=arial
+for i in ${x[@]};
+do
+#echo $i
+eval a=$(echo "$[$i * $D - $R]")
+#echo $a
+x_coords+=("$a")
+done
 
-#circle_size=20
+for i in ${y[@]};
+do
+#echo $i
+eval a=$(echo "$[$i * $D - $R]")
+#echo $a
+y_coords+=("$a")
+done
+
+echo x_coords
+echo ${x_coords[@]}
+echo y_coords
+echo ${y_coords[@]}
+
+echo ${x_max[-1]}
+plates=$(seq "${x_max[-1]}")
+echo $plates
+
+
+rm working.t
+rm working2.t
+
+echo "<svg>" >> working2.t
+
+for i in $plates
+do
+cat "template.t" > working.t
+sed -i s/NAME/"$i"/ working.t
+sed -i s/NUMBER/"$i"/ working.t
+sed -i s/LINEx/"$i"/ working.t
+sed -i s/RADIUS/"$R"/ working.t
+
+cat working.t >> working2.t
+done
+
+echo "<\svg>" >> working2.t
+
+rm xcoords1.t
+rm xcoords2.t
+
+for run in ${x[@]}
+do
+
+for i in ${x_coords[@]}
+do
+echo $i >> xcoords1.t
+echo $i >> xcoords2.t
+done
+
+done
+
+i=0
+
+echo ${y[@]}
+rm ycoords.t
+
+for i in ${e1[@]}
+do
+echo $(${y["$i"]}) >> ycoords.t
+done
+
+
+
+
+
+#rm working.t
+#for i in $plates
+#do
+#cat "template.t" >> working.t
+#eval $(echo "sed s/NAME/$i/ working.t")
+#eval $(echo "sed s/NUMBER/$i/ working.t")
+#cat working.t >> file.svg
+#done
+#echo "<\svg>" >> file.svg
 
 #for i in $x_plates;
 #do
-#a=$(echo $((circle_size + i * circle_size)))
+#a=$(echo $(($i * $D - $R)))
 #echo "
 #  <g id="$i">
 #    <circle style="fill:#FFFFFF; stroke:#000000; stroke-width:2" cx="$a" cy="12.5" r="12.5">
