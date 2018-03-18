@@ -2,3 +2,5 @@ git clone https://github.com/robinw88/plateplanner.git
 git add . #adds all files to commit
 git commit -m "add message"
 git push https://github.com/robinw88/plateplanner.git master
+
+https://stackoverflow.com/questions/27260811/python-find-position-of-element-in-array
