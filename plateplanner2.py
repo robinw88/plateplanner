@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import itertools
+import re
 #import svgwrite
 
 # Enter statistics
@@ -73,11 +74,22 @@ for n in np.nditer(ctxy, order='C'):
         print(n)
 	print(y)
 
-y=0
-for n,o in np.nditer(itertools.izip(ctxy,trxy), flags=['refs_ok'], order='C'):
-	y=(y+1)
-        print(n)
-	print(o)
-
 for tr,ct in itertools.izip(trxy,ctxy):
     print(tr,ct)
+
+i=open("output.svg","w")
+i.write("<svg>\n")
+
+for n in np.nditer(ctxy,order='C'):
+
+
+f=open("template.t","r")
+for line in f:
+	line=
+
+
+	i.write(line)
+
+f.close()
+i.write("<\svg>")
+i.close()
