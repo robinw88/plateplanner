@@ -80,14 +80,18 @@ for tr,ct in itertools.izip(trxy,ctxy):
 i=open("output.svg","w")
 i.write("<svg>\n")
 
-for n in np.nditer(ctxy,order='C'):
+for n in xx:
+	row,col = np.where(xy == n)
+#        print row,col
+	print xy[row,col]
+	print xc[row,col]
+	print yc[row,col]
+	print ctxy[row,col]
+	print trxy[row,col]
 
 
 f=open("template.t","r")
 for line in f:
-	line=
-
-
 	i.write(line)
 
 f.close()
