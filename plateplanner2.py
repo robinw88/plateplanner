@@ -5,6 +5,10 @@ import re
 #import svgwrite
 
 # Enter statistics
+yoffset=4
+cell_type_offset=40
+condition_offset=20
+
 conditions=("DMSO","991","2DG","PHEN")
 n=0
 for i in conditions:
@@ -41,16 +45,26 @@ print "plate numbers in a matrix:\n",xy
 
 r=10 #radius
 d=20 #diameter
+diameter=d
 
 xc=range(x_plates)
 xc = [(((n+1)*d)-r) for n in xc]
 xc=np.tile(xc,(y_plates,1))
+xc=xc+cell_type_offset
 print "x coordinate matrix\n",xc
+xtc=xc
+print "x text coordinate matrix\n",xtc
+
+
 yc=range(y_plates)
 yc = [(((n+1)*d)-r) for n in yc]
 yc=np.tile(yc,(x_plates,1))
 yc=np.transpose(yc)
+yc=yc+condition_offset
 print "y coordinate matrix\n",yc
+
+ytc=yc+yoffset
+print "y text coordinate matrix\n",ytc
 
 # new matrix for treatments
 #trx=conditions*2 #not this
@@ -77,23 +91,159 @@ for n in np.nditer(ctxy, order='C'):
 for tr,ct in itertools.izip(trxy,ctxy):
     print(tr,ct)
 
-i=open("output.svg","w")
-i.write("<svg>\n")
+fi=open("output.svg","w")
+fi.write("<svg>\n")
 
 for n in xx:
 	row,col = np.where(xy == n)
-#        print row,col
-	print xy[row,col]
-	print xc[row,col]
-	print yc[row,col]
-	print ctxy[row,col]
-	print trxy[row,col]
+	name=xy[row,col]
+	name=str(name)[1:-1]
+	print name
+	number=xy[row,col]
+	number=str(number)[1:-1]
+	print name
+	xcoord1=xc[row,col]
+	xcoord1=str(xcoord1)[1:-1]
+	print xcoord1
+	ycoord1=yc[row,col]
+	ycoord1=str(ycoord1)[1:-1]
+	print ycoord1
+	xcoord2=xtc[row,col]
+	xcoord2=str(xcoord2)[1:-1]
+	print xcoord2
+	ycoord2=ytc[row,col]
+	ycoord2=str(ycoord2)[1:-1]
+	print ycoord2
+	radius1=str(r)
+	print radius1
+	celltype1=ctxy[row,col]
+	celltype1=str(celltype1)[1:-1]
+	print celltype1
+	treatmenttype1=trxy[row,col]
+	treatmenttype1=str(treatmenttype1)[1:-1]
+	print treatmenttype1
+	fa=open("template.t","r")
+	for line in fa:
+		a=re.compile('[N][A][M][E]')
+		line = a.sub(name,line)
+		print line
+		b=re.compile('[X][C][O][O][R][D][1]')
+		line = b.sub(xcoord1,line)
+		print line
+		c=re.compile('[X][C][O][O][R][D][2]')
+		line = c.sub(xcoord2,line)
+		print line
+		d=re.compile('[Y][C][O][O][R][D][1]')
+		line = d.sub(ycoord1,line)
+		print line
+		e=re.compile('[Y][C][O][O][R][D][2]')
+		line = e.sub(ycoord2,line)
+		print line
+		f=re.compile('[N][U][M][B][E][R][1]')
+		line = f.sub(number,line)
+		print line
+		g=re.compile('[R][A][D][I][U][S][1]')
+		line = g.sub(radius1,line)
+		print line
+		fi.write(line)
+	fa.close()
 
+#header rectangles
+trrl=diameter*number_of_duplicates
+trrl=str(trrl)
+print "trrl",trrl
+trrh=diameter
+trrh=str(trrh)
+print "trrh",trrh
 
-f=open("template.t","r")
-for line in f:
-	i.write(line)
+conditions2=list(conditions)
+print "conditions as list\n",conditions2
+conditions2.insert(0, '')
+print "conditions as list with blank first row (conditions2) \n",conditions2
+noc2=number_of_conditions
+vv=range(noc2+1)
+vv= [x*40 for x in vv]
+print "x coordinates for rectangles (vv)\n",vv
+YCOORD1=0
+YCOORD1=str(YCOORD1)
 
-f.close()
-i.write("<\svg>")
-i.close()
+#Y-offset of condition label text
+YCOORD2=15
+ycoord2=str(YCOORD2)
+
+for y in conditions2:
+	col=conditions2.index(y)
+	name=y
+	name=str(name)
+	xcoord1=vv[col]
+	xcoord1=str(xcoord1)
+	xcoord2=vv[col]+20
+	xcoord2=str(xcoord2)
+	
+
+	fb=open("template2.t","r")
+	for line in fb:
+		a=re.compile('[N][A][M][E]')
+		line=a.sub(name,line)
+		b=re.compile('[T][R][R][L][1]')
+		line=b.sub(trrl,line)
+		c=re.compile('[T][R][R][H][1]')
+		line=c.sub(trrh,line)
+		d=re.compile('[X][C][O][O][R][D][1]')
+		line = d.sub(xcoord1,line)
+		e=re.compile('[Y][C][O][O][R][D][1]')
+		line = e.sub(YCOORD1,line)
+		f=re.compile('[X][C][O][O][R][D][2]')
+		line = f.sub(xcoord2,line)
+		g=re.compile('[Y][C][O][O][R][D][2]')
+		line = g.sub(ycoord2,line)
+		fi.write(line)
+	fb.close()
+
+cell_types2=list(cell_types)
+print "cell types as list\n",cell_types2
+cell_types2.insert(0, '')
+print "cell types as list with blank first row (cell_types2)\n",cell_types2
+noct2=number_of_cell_types
+ww=range(noct2+1)
+ww=[x*20 for x in ww]
+print "y coordinates for rectangles (ww)\m",ww
+XCOORD1=0
+xcoord1=str(XCOORD1)
+
+#x offset - 50% rectangle diameter!
+XCOORD2=20
+xcoord2=str(XCOORD2)
+#y offset correction
+celltypeyoffset=15
+
+for y in cell_types2:
+	col=cell_types2.index(y)
+	name=y
+	name=str(name)
+	ycoord1=ww[col]
+	ycoord1=str(ycoord1)
+	ycoord2=ww[col]+celltypeyoffset
+	ycoord2=str(ycoord2)
+
+	fc=open("template3.t","r")
+	for line in fc:
+		a=re.compile('[N][A][M][E]')
+		line=a.sub(name,line)
+		b=re.compile('[T][R][R][L][1]')
+		line=b.sub(trrl,line)
+		c=re.compile('[T][R][R][H][1]')
+		line=c.sub(trrh,line)
+		d=re.compile('[X][C][O][O][R][D][1]')
+		line = d.sub(xcoord1,line)
+		e=re.compile('[Y][C][O][O][R][D][1]')
+		line = e.sub(ycoord1,line)
+		f=re.compile('[X][C][O][O][R][D][2]')
+		line = f.sub(xcoord2,line)
+		g=re.compile('[Y][C][O][O][R][D][2]')
+		line = g.sub(ycoord2,line)
+		fi.write(line)
+	fc.close()
+
+fi.write("</svg>")
+fi.close()
