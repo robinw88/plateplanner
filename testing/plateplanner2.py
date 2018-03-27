@@ -6,10 +6,10 @@ import re
 
 # Enter statistics
 yoffset=4
-cell_type_offset=40
+cell_type_offset=100
 condition_offset=20
 
-conditions=("DMSO","991","2DG")
+conditions=("DMSO","IONO","H2O2")
 n=0
 for i in conditions:
 	n=(n+1)
@@ -17,7 +17,7 @@ for i in conditions:
 
 print "condition",n,":",i
 
-cell_types=("WT","LKB1")
+cell_types=("G2 WT","G2 SASA")
 n=0
 for i in cell_types:
 	n=(n+1)

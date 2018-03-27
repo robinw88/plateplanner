@@ -2,7 +2,69 @@ import numpy as np
 import os
 import itertools
 import re
+#import Tkinter as tk
+from Tkinter import *
 #import svgwrite
+
+root = Tk()
+root.wm_title("Plateplanner V0.3") #title the window
+root.config(background = "#FFFFFF") #background colour
+
+leftFrame = Frame(root, width=200, height = 600)
+leftFrame.grid(row=0, column=0, padx=10, pady=2)
+
+firstLabel = Label(leftFrame, text="Plating Options")
+firstLabel.grid(row=0, column=0, padx=10, pady=2)
+
+entry1 = Entry(leftFrame,width=10)
+entry1.grid(row=1,column=1,padx=10,pady=2)
+entry1.get()
+
+Button(leftFrame, text='input', command=root.quit).grid(row=1,column=2,sticky=W,padx=10,pady=2)
+
+secondLabel = Label(leftFrame, text="Enter Number of Conditions")
+secondLabel.grid(row=1, column=0, padx=10, pady=2)
+
+entry2 = Entry(leftFrame,width=10)
+entry2.grid(row=2,column=1,padx=10,pady=2)
+entry2.get()
+
+thirdLabel = Label(leftFrame, text="Number of cell lines")
+thirdLabel.grid(row=2, column=0, padx=10, pady=2)
+
+Button(leftFrame, text='input', command=root.quit).grid(row=2,column=2,sticky=W,padx=10,pady=2)
+
+entry3 = Entry(leftFrame,width=10)
+entry3.grid(row=3,column=1,padx=10,pady=2)
+entry3.get()
+
+thirdLabel = Label(leftFrame, text="Number of Technical Replicates")
+thirdLabel.grid(row=3, column=0, padx=10, pady=2)
+
+Button(leftFrame, text='input', command=root.quit).grid(row=3,column=2,sticky=W,padx=10,pady=2)
+
+
+Button(leftFrame, text='Exit', command=root.quit).grid(row=4,column=0,sticky=W,padx=10,pady=2)
+
+def show_entry_fields():
+   print("First Name: %s\nLast Name: %s" % (entry1.get(), entry2.get()))
+   x = entry1.get()
+   y = entry2.get()
+   z = entry3.get()
+Button(leftFrame, text='Show', command=show_entry_fields).grid(row=4, column=1, sticky=W, pady=4)
+
+
+
+
+#Right Frame and its contents
+rightFrame = Frame(root, width=200, height = 600)
+rightFrame.grid(row=0, column=1, padx=10, pady=2)
+
+
+imageEx = PhotoImage(file = 'output.gif')
+Label(rightFrame, image=imageEx).grid(row=1, column=0, padx=10, pady=2)
+
+root.mainloop() #monitor the window
 
 # Enter statistics
 yoffset=4
@@ -247,3 +309,4 @@ for y in cell_types2:
 
 fi.write("</svg>")
 fi.close()
+
