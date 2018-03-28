@@ -105,7 +105,7 @@ def update_ctyoffsettable():
 	ctyoff.pack()
 
 def generate_image():
-	cell_type_offset=20
+	cell_type_offset=ctyoffset
 	condition_offset=ctxoffset
 	n=0
 	for i in conditions:
@@ -358,6 +358,9 @@ rowoptionsfourthleftFrame.grid(row=3, column=0, padx=10, pady=2)
 rowoptionsfourthrightFrame = Frame(rowoptions)
 rowoptionsfourthrightFrame.grid(row=3, column=1, padx=10, pady=2)
 
+canvas1 = Frame(root)
+canvas1.grid(row=3, column=0, padx=10, pady=2)
+
 ### Enter Conditions
 
 lconditions = Label(conditionsleftFrame,text="Conditions")
@@ -445,6 +448,9 @@ Button(rowoptionsfourthleftFrame, text='Add and Update', command=update_ctyoffse
 
 
 #imagedisplay
+
+imageEx = PhotoImage(file = 'output.gif')
+Label(canvas1, image=imageEx).grid(row=1, column=0, padx=10, pady=2)
 
 bottomFrame = Frame(root)
 bottomFrame.grid(row=4, column=0, padx=10, pady=2)
